@@ -30,7 +30,7 @@ class AuthController extends Controller
         {
             return response()->json([
                 'status'    =>  404,
-                'message'   =>  'User Not found'
+                'message'   =>  'Incorrect username or password'
             ], 404);
         }
     }

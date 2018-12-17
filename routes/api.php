@@ -13,11 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-
 $prefix = '/v1';
 
 Route::group([
@@ -33,13 +28,13 @@ function()
 
 
 Route::group([
-	// 'middleware' => 'auth:api',
+	'middleware' => 'auth:api',
 	'prefix'	=>	$prefix
 ], 
 function()
 {
 
-	Route::get('generate-schema', 'SchemaController@index');
+	Route::get('generate-schema', 'SchemaController@generateSchema');
 
 	Route::post('get-menu', 'MenuController@getMenu');
 
