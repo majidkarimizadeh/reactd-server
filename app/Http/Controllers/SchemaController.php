@@ -217,6 +217,10 @@ class SchemaController extends Controller
         $storeKey       = $lookUp->REFERENCED_COLUMN_NAME;
         $referenceTable = $lookUp->REFERENCED_TABLE_NAME;
         $displayKey     = 'name';
+        if($referenceTable === 'users') 
+        {
+            $displayKey = " CONCAT('first_name', ' ', 'last_name') ";
+        }
 
         $lookupRecord = [
             'display_key'   =>  $displayKey,

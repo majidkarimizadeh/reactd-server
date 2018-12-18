@@ -66,9 +66,8 @@ class DataController extends Controller
         }
         $query = DB::table('schema')
             ->join('look_ups', 'look_ups.id', '=', DB::raw(" meta_value->>'$.rdf' "))
-            ->where('meta_key', 'LIKE', "{$tableName}_%")
-            ->where('meta_key', 'NOT LIKE', '%translation%')
-            ->where('meta_value->controller', 'lookup');
+            ->where('meta_key', $tableName)
+            ->where('meta_value->cnt', 'lku');
 
         if($list && count($list))
         {
@@ -76,11 +75,12 @@ class DataController extends Controller
         }
         
         $lookups    =  $query->select(
-                            DB::raw(" meta_value->>'$.name' as name "),
+                            DB::raw(" meta_value->>'$.nme' as name "),
                             'look_ups.*'
                         )
                         ->get();
 
+                        var_dump($lookups);
         $index = 0;
         foreach ($lookups as $key => $lookup) 
         {
@@ -207,7 +207,7 @@ class DataController extends Controller
             ->leftJoin('look_ups', 'look_ups.id', '=', DB::raw(" meta_value->>'$.rdf' "))
             ->where('meta_key', 'LIKE', "{$tableName}_%")
             ->where('meta_key', 'NOT LIKE', '%translation%')
-            ->where('meta_value->controller', 'lku');
+            ->where('meta_value->cnt', 'lku');
 
         if($neededCols && count($neededCols))
         {
