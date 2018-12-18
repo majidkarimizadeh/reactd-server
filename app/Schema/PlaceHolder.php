@@ -4,15 +4,17 @@ namespace App\Schema;
 
 class PlaceHolder
 {
-    static $placeholder = [
-        'user_id'     =>      'ID'
-    ];
-
     public static function get($key)
     {
-        if(array_key_exists($key, self::$placeholder)) 
+        $path = 'placeholder.example';
+        if(file_exists(base_path('config/placeholder.php')))
         {
-            return self::$placeholder[$key];
+            $path = 'placeholder';
+        }
+
+        if(array_key_exists($key, config($path))) 
+        {
+            return config($path)[$key];
         }
         else 
         {

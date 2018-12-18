@@ -93,6 +93,12 @@ class SchemaController extends Controller
                     'plh'   =>  PlaceHolder::get($column),
                 ];
 
+                // only supported in using standard naming
+                if(Translation::hasColumn($table, $column)) 
+                {
+                    $schemaRecordMetaValue['trs'] = '1';
+                }
+
                 if($lookUp) 
                 {
                     $schemaRecordMetaValue['cnt'] = 'lku';
@@ -219,8 +225,8 @@ class SchemaController extends Controller
 
         if(Translation::has($referenceTable)) 
         {
-            $lookupRecord['store_key'] = Translation::has($referenceTable)['key'];
-            $lookupRecord['table'] = Translation::has($referenceTable)['table'];
+            $lookupRecord['store_key'] = key(Translation::get($referenceTable));
+            $lookupRecord['table'] = current(Translation::get($referenceTable));
         }
         else 
         {

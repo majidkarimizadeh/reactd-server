@@ -4,15 +4,17 @@ namespace App\Schema;
 
 class Icon
 {
-    static $icons = [
-    	'users'		=>	'fa fa-users'
-    ];
-
     public static function get($key)
     {
-        if(array_key_exists($key, self::$icons)) 
+        $path = 'icon.example';
+        if(file_exists(base_path('config/icon.php')))
         {
-            return self::$icons[$key];
+            $path = 'icon';
+        }
+
+        if(array_key_exists($key, config($path))) 
+        {
+            return config($path)[$key];
         }
         else 
         {

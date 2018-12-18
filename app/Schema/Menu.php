@@ -5,22 +5,17 @@ use DB;
 
 class Menu
 {
-    static $items = [
-            [
-                "lbl"     =>  "User Management",
-                "icn"      =>  "fa fa-cog",
-                "itm"     =>  [
-                    [ "lbl" =>  'Users', "url"   =>  "users", "icn"  =>  'fa fa-users' ],
-                    [ "lbl" =>  'Roles', "url"   =>  "roles", "icn"  =>  'fa fa-lock' ],
-                ]
-            ],
-        ];
-
     public static function createMenu()
     {
+    	$path = 'menu.example';
+    	if(file_exists(base_path('config/menu.php')))
+    	{
+    		$path = 'menu';
+    	}
+    	
         DB::table('schema')->insert([
             'meta_key'      =>  'main_menubar',
-            'meta_value'    =>  json_encode(self::$items)
+            'meta_value'    =>  json_encode(config($path))
         ]);
     }
 }

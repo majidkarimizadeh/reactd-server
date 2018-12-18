@@ -4,16 +4,17 @@ namespace App\Schema;
 
 class Label
 {
-    static $label = [
-        'users'     =>      'Users',
-        'roles'     =>      'Roles',
-    ];
-
     public static function get($key)
     {
-        if(array_key_exists($key, self::$label)) 
+        $path = 'label.example';
+        if(file_exists(base_path('config/label.php')))
         {
-            return self::$label[$key];
+            $path = 'label';
+        }
+
+        if(array_key_exists($key, config($path))) 
+        {
+            return config($path)[$key];
         }
         else 
         {
