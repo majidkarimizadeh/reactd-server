@@ -17,7 +17,7 @@ class DataController extends Controller
         $start      = $request->has('start') ? $request->start : 0;
         $limit      = ($request->has('limit') && $request->limit <= 1000) ? $request->limit : 9;
         $conditions = $request->has('conditions') ? json_decode($request->conditions, true) : [];
-        
+
         $where = $filters = $cols = $joins = "";
         $translationColumns = [];
 
@@ -55,7 +55,7 @@ class DataController extends Controller
             {
                 if(property_exists($column, 'trs')) 
                 {
-                    $translationColumns[] = $column;
+                    $translationColumns[] = $column->nme;
                 }
                 else 
                 {
@@ -97,7 +97,7 @@ class DataController extends Controller
         }
 
 
-        if($translation) 
+        if($translation && $lang) 
         {
             $translationTable = current($translation);
             $translationTableKey = key($translation);
@@ -106,27 +106,28 @@ class DataController extends Controller
             {
                 foreach ($translationColumns as $translationColumn) 
                 {
-                    $cols .= ", T{$index}.{$translationColumn->nme} ";
+                    $cols .= ", T{$index}.{$translationColumn} ";
                 }
             }
             $joins .= " LEFT JOIN {$translationTable} as T{$index} ON T0.{$pk} = T{$index}.{$translationTableKey} ";
-        }
 
-        $where = QueryBuilder::whereBuilder($conditions);
-        if($where) 
-        {
-            $where = " WHERE " . $where;
-        }
-
-        if($translation && $lang) 
-        {
+            $where = QueryBuilder::whereBuilderOnTranslation($conditions, '', $translationColumns, $index);
             if($where) 
             {
-                $where .= " AND T{$index}.locale = '{$lang}' ";
+                $where = " WHERE {$where} AND T{$index}.locale = '{$lang}' ";
             }
-            else 
+            else
             {
-                $where .= " WHERE T{$index}.locale = '{$lang}' ";
+                $where = " WHERE T{$index}.locale = '{$lang}' ";
+            }
+
+        }
+        else
+        {
+            $where = QueryBuilder::whereBuilder($conditions);
+            if($where) 
+            {
+                $where = " WHERE {$where} ";
             }
         }
 
@@ -134,8 +135,8 @@ class DataController extends Controller
         $countQuery = "SELECT COUNT(*) as cnt FROM {$tableName} as T0 {$joins} {$where}";
         
         return response()->json([
-            'totalRows'   =>  DB::select($countQuery)[0]->cnt,
-            'data'      =>  DB::select($query)
+            'totalRows'     =>  DB::select($countQuery)[0]->cnt,
+            'data'          =>  DB::select($query)
         ]);
     }
 
