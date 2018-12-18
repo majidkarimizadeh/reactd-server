@@ -60,7 +60,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getFullNameAttribute()
     {
-        return "{$this->first_name}  {$this->last_name}";
+        return "{$this->first_name} {$this->last_name}";
     }
 
     public function getImgAttribute()
@@ -69,6 +69,6 @@ class User extends Authenticatable implements JWTSubject
         {
             return url($this->profile_image);
         }
-        return false;
+        return "";
     }
 }
