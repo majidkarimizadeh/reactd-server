@@ -28,7 +28,7 @@ function()
 
 
 Route::group([
-	'middleware' => 'auth:api',
+	// 'middleware' => 'auth:api',
 	'prefix'	=>	$prefix
 ], 
 function()

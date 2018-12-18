@@ -233,21 +233,25 @@ class SchemaController extends Controller
     {
         $schemaRecords  =   DB::table('schema')
                             ->where('meta_key', '<>', 'main_menubar')
+                            ->where('meta_value->tbl', null)
                             ->select('id')
                             ->get()
                             ->pluck('id')
                             ->toArray();
 
-        $roleOwner  =   DB::table('roles')->where('slug', 'owner')->first();
+        $roles = DB::table('roles')->get();
 
         $schemaActionsRecords = [];
         foreach ($schemaRecords as $schemaRecord) 
         {
-            $schemaActionsRecords[] = [
-                'schema_id'     =>  $schemaRecord,
-                'role_id'       =>  $roleOwner->id,
-                'perm'          =>  '15'
-            ];
+            foreach($roles as $role) 
+            {
+                $schemaActionsRecords[] = [
+                    'schema_id'     =>  $schemaRecord,
+                    'role_id'       =>  $role->id,
+                    'perm'          =>  '15'
+                ];
+            }
         }
         DB::table('schema_actions')->insert($schemaActionsRecords);
     }
