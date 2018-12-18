@@ -131,7 +131,12 @@ class DataController extends Controller
             }
         }
 
-        $query = "SELECT {$filters} {$cols} FROM {$tableName} as T0 {$joins} {$where} ORDER BY T0.{$pk} DESC LIMIT $start, $limit ";
+        $orderBy = '';
+        if($pk) 
+        {
+            $orderBy = " ORDER BY T0.{$pk} DESC ";
+        }
+        $query = "SELECT {$filters} {$cols} FROM {$tableName} as T0 {$joins} {$where} {$orderBy} LIMIT $start, $limit ";
         $countQuery = "SELECT COUNT(*) as cnt FROM {$tableName} as T0 {$joins} {$where}";
         
         return response()->json([
