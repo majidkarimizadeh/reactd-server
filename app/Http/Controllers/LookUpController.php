@@ -9,16 +9,9 @@ class LookUpController extends Controller
 
     public function lookUp(Request $request)
     {
-        if(array_key_exists('lang', $inputs) && $inputs['lang']) 
-        {
-            $lang = $inputs['lang'];
-        }
-        else
-        {
-            $lang = false;
-        }
-        $rdf     = $request->rdf;
-        $lookup  = DB::table('look_ups')->find($rdf);
+        $lang   = ($request->has('lang') && $request->lang) ? $request->lang : false;
+        $rdf    = $request->rdf;
+        $lookup = DB::table('look_ups')->find($rdf);
 
         $store_key      = $lookup->store_key;
         $display_key    = $lookup->display_key;
@@ -26,7 +19,7 @@ class LookUpController extends Controller
         $query          = $lookup->query;
 
         $query = str_replace(':store_key', $store_key, $query);
-        $query = str_replace(':display_key', $store_key, $query);
+        $query = str_replace(':display_key', $display_key, $query);
         $query = str_replace(':table', $table, $query);
 
         if($lang)
