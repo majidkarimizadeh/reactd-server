@@ -14,7 +14,7 @@ class Security
 
     public static function menuSecurity($menus, $parent = null)
     {
-        $user  = app('auth')->user();        
+        $user   = auth()->user();
         $roles = $user->roles()->pluck('id')->toArray();
         
         $actions = DB::table('schema_actions')
@@ -35,13 +35,15 @@ class Security
         {
             if(array_key_exists('itm', $menu)) 
             {
-                $items[] = self::menuSecurity($menu->itm, $menu);
+                $items[] = self::menuSecurity($menu['itm'], $menu);
             }
             else
             {
                 foreach ($actions as $action) 
                 {
-                    if($action->url === $menu->url && ($action->perm & $neededPermission) === $neededPermission) 
+                    if( array_key_exists('url', $menu) && 
+                        $action->url === $menu['url'] &&
+                        ($action->perm & $neededPermission) === $neededPermission) 
                     {
                         $items['itm'][] = $menu;
                     }
@@ -49,9 +51,9 @@ class Security
 
                 if(!is_null($parent) && array_key_exists('itm', $items))
                 {
-                    $items['lbl'] = property_exists($parent, 'lbl') ? $parent->lbl : '' ;
-                    $items['url'] = property_exists($parent, 'url') ? $parent->url : '' ;
-                    $items['icn'] = property_exists($parent, 'icn') ? $parent->icn : '' ;
+                    $items['lbl'] = array_key_exists('lbl', $parent) ? $parent['lbl'] : '' ;
+                    $items['url'] = array_key_exists('url', $parent) ? $parent['url'] : '' ;
+                    $items['icn'] = array_key_exists('icn', $parent) ? $parent['icn'] : '' ;
                 }
 
             }
@@ -68,7 +70,7 @@ class Security
             'delete'    =>  true
         ];
 
-        $user   = app('auth')->user();
+        $user   = auth()->user();
         $roles  = $user->roles()->pluck('id')->toArray();
 
         $actions    =   DB::table('schema_actions')
@@ -117,7 +119,7 @@ class Security
     {
         $details = [];
 
-        $user   = app('auth')->user();
+        $user   = auth()->user();
         $roles  = $user->roles()->pluck('id')->toArray();
         
         $actions    =   DB::table('schema_actions')

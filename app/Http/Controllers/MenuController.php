@@ -13,7 +13,7 @@ class MenuController extends Controller
                         ->pluck('meta_value')
                         ->first();
 
-        $menu       = json_decode($menuBarRecord);
+        $menu       = json_decode($menuBarRecord, true);
         $secureMenu = Security::menuSecurity($menu);
         return response()->json([
             'menu'    =>  $secureMenu,
