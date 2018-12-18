@@ -198,18 +198,17 @@ class DataController extends Controller
             $filters = rtrim($filters, ',');
         }
         $query = DB::table('schema')
-            ->join('look_ups', 'look_ups.id', '=', DB::raw(" meta_value->>'$.rdf' "))
+            ->leftJoin('look_ups', 'look_ups.id', '=', DB::raw(" meta_value->>'$.rdf' "))
             ->where('meta_key', 'LIKE', "{$tableName}_%")
             ->where('meta_key', 'NOT LIKE', '%translation%')
-            ->where('meta_value->controller', 'lookup');
+            ->where('meta_value->controller', 'lku');
 
         if($neededCols && count($neededCols))
         {
             $query = $query->whereIn('meta_value->no', $neededCols);
         }
-        
         $lookups    =  $query->select(
-                            DB::raw(" meta_value->>'$.name' as name "),
+                            DB::raw(" meta_value->>'$.nme' as name "),
                             'look_ups.*'
                         )
                         ->get();
@@ -232,8 +231,8 @@ class DataController extends Controller
 
         if($translation) 
         {
-            $translationTable = current($translation);
             $translationTableKey = key($translation);
+            $translationTable = current($translation);
             $index = $index + 1;
             if(count($translationColumns)) 
             {

@@ -49,11 +49,14 @@ class Translation
     {
         if(
             self::existTranslationTable($table) &&
-            Schema::hasColumn($table . '_translation', $column)
+            Schema::hasColumn($table . '_translation', $column) &&
+            Schema::hasColumn($table, $column) &&
+            ($column !== 'id')
         )
         {
             return true;
         }
+        return false;
     }
 
     public static function existTranslationTable($key)
