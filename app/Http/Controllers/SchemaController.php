@@ -23,7 +23,8 @@ class SchemaController extends Controller
         SchemaMessage::createSchemaMessage();
 
         $tables = array_diff(
-            array_map('reset', DB::select('SHOW TABLES')), 
+            // array_map('reset', DB::select('SHOW TABLES')), 
+            array_map('reset', DB::select("SHOW TABLES WHERE `Tables_in_". DB::connection()->getDatabaseName() ."` NOT LIKE '%translation%' ")), 
             ['migrations', 'schema', 'schema_msg', 'schema_actions', 'look_ups']
         );
 
