@@ -66,7 +66,7 @@ class DataController extends Controller
         }
         $query = DB::table('schema')
             ->join('look_ups', 'look_ups.id', '=', DB::raw(" meta_value->>'$.rdf' "))
-            ->where('meta_key', $tableName)
+            ->where('meta_value->tbl', $tableName)
             ->where('meta_value->cnt', 'lku');
 
         if($list && count($list))
@@ -80,7 +80,7 @@ class DataController extends Controller
                         )
                         ->get();
 
-                        var_dump($lookups);
+
         $index = 0;
         foreach ($lookups as $key => $lookup) 
         {
