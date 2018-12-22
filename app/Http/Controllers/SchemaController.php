@@ -152,6 +152,7 @@ class SchemaController extends Controller
         DB::table('schema')->insert($schemaRecords);
 
         $this->generateSchemaActions();
+        // $this->orderInputs();
         return 'Schema generated successfully';
 
     }
@@ -219,7 +220,7 @@ class SchemaController extends Controller
         $displayKey     = 'name';
         if($referenceTable === 'users') 
         {
-            $displayKey = " CONCAT('first_name', ' ', 'last_name') ";
+            $displayKey = 'last_name';
         }
 
         $lookupRecord = [
@@ -265,5 +266,10 @@ class SchemaController extends Controller
             }
         }
         DB::table('schema_actions')->insert($schemaActionsRecords);
+    }
+
+    private function orderInputs()
+    {
+        // you can update your schema for better rendering form :)
     }
 }
