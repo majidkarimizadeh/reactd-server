@@ -50,6 +50,15 @@ class DestroyController extends Controller
                 ->where('locale', $lang)
                 ->where(key($translation), $primary)
                 ->delete();
+
+                $hasAnotherLang = DB::table(current($translation))
+                ->where(key($translation), $primary)
+                ->exists();
+
+                if(!$hasAnotherLang) 
+                {
+                    DB::table($schemaRecord->name)->delete($primary);
+                }
             }
             else
             {
