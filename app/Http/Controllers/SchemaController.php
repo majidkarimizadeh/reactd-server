@@ -131,9 +131,9 @@ class SchemaController extends Controller
                 else if (TypeChecker::isNumber($type)) 
                 {
                     $schemaRecordMetaValue['cnt'] = 'num';
-                    $schemaRecordMetaValue['vld'] = [
-                        'numeric'   =>  true
-                    ];
+                    // $schemaRecordMetaValue['vld'] = [
+                    //     'numeric'   =>  true
+                    // ];
                 }
                 else if(TypeChecker::isDate($type)) 
                 {
@@ -220,7 +220,7 @@ class SchemaController extends Controller
         $displayKey     = 'name';
         if($referenceTable === 'users') 
         {
-            $displayKey = 'last_name';
+            $displayKey = 'email';
         }
 
         $lookupRecord = [
