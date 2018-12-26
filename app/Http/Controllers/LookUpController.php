@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use App\Schema\Translation;
 use DB;
 
 class LookUpController extends Controller
@@ -22,7 +23,7 @@ class LookUpController extends Controller
         $query = str_replace(':display_key', $display_key, $query);
         $query = str_replace(':table', $table, $query);
 
-        if($lang)
+        if($lang AND Translation::existTranslationTable($table))
         {
             $query = str_replace(':condition', " WHERE locale = '{$lang}' ", $query);
         }
