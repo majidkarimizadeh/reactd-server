@@ -44,7 +44,7 @@ class Validation {
 
 	    if(array_key_exists($required, $validations)) 
 	    {
-	        if(!($value !== '' AND isset($value))) 
+	        if(!($value !== '' AND isset($value) AND !is_null($value))) 
 	        {
 	            $errors[] = sprintf($msg[0]->meta_value, $label);
 	        }
@@ -60,7 +60,7 @@ class Validation {
 
 	    if(array_key_exists($minVal, $validations)) 
 	    {
-	        if(!((int)$value > (int)$validations[$minVal])) 
+	        if(!((int)$value > (int)$validations[$minVal] AND !is_null($value))) 
 	        {
 	            $errors[] = sprintf($msg[2]->meta_value, $label ,(int)$validations[$minVal]);   
 	        }
@@ -68,7 +68,7 @@ class Validation {
 
 	    if(array_key_exists($maxVal, $validations)) 
 	    {
-	        if(!((int)$value < (int)$validations[$maxVal]))
+	        if(!((int)$value < (int)$validations[$maxVal] AND !is_null($value)))
 	        {
 	            $errors[] = sprintf($msg[3]->meta_value, $label ,(int)$validations[$maxVal]);
 	        }
@@ -76,7 +76,7 @@ class Validation {
 
 	    if(array_key_exists($minLen, $validations)) 
 	    {
-	        if(!(strlen($value) > (int)$validations[$minLen]))
+	        if(!(strlen($value) > (int)$validations[$minLen] AND !is_null($value)))
 	        {
 	            $errors[] = sprintf($msg[4]->meta_value, $label ,(int)$validations[$minLen]);
 	        }
@@ -84,7 +84,7 @@ class Validation {
 
 	    if(array_key_exists($maxLen, $validations)) 
 	    {
-	        if(!(strlen($value) < (int)$validations[$maxLen]))
+	        if(!(strlen($value) < (int)$validations[$maxLen] AND !is_null($value)))
 	        {
 	            $errors[] = sprintf($msg[5]->meta_value, $label ,(int)$validations[$maxLen]);
 	        }
