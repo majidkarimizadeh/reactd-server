@@ -22,7 +22,7 @@ class StoreController extends Controller
         $schemaRecord = DB::table('schema')
             ->where('meta_value->url', $url)
             ->select(
-                'meta_key',
+                DB::raw(" meta_value->>'$.nme' as name "),
                 DB::raw(" meta_value->>'$.crt' as crt "),
                 DB::raw(" meta_value->>'$.lst' as list "),
                 DB::raw(" meta_value->>'$.pk' as pk "),
@@ -32,7 +32,7 @@ class StoreController extends Controller
 
         if(!$schemaRecord) return resposne('Not found.', 404);
 
-        $tableName      = $schemaRecord->meta_key;
+        $tableName      = $schemaRecord->name;
         $securityResult = Security::tableSecurity($tableName, 'insert');
 
         if(!$securityResult['hasPermission']) 
