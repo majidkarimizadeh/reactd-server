@@ -84,7 +84,11 @@ class StoreController extends Controller
             }
             else if($request->has($createColumn->nme))
             {
-                if(!property_exists($createColumn, 'trs')) 
+                if($createColumn->cnt === 'pas') 
+                {
+                    $shouldInsert[$createColumn->nme] = bcrypt($inputs[$createColumn->nme]);
+                }
+                else if(!property_exists($createColumn, 'trs')) 
                 {
                     $shouldInsert[$createColumn->nme] = $inputs[$createColumn->nme];
                 } 

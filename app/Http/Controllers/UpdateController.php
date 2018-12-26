@@ -95,7 +95,11 @@ class UpdateController extends Controller
             }
             else if($request->has($editColumn->nme))
             {
-                if(!property_exists($editColumn, 'trs')) 
+                if($editColumn->cnt === 'pas') 
+                {
+                    $shouldUpdate[$editColumn->nme] = bcrypt($inputs[$editColumn->nme]);
+                }
+                else if(!property_exists($editColumn, 'trs')) 
                 {
                     $shouldUpdate[$editColumn->nme] = $inputs[$editColumn->nme];
                 } 
