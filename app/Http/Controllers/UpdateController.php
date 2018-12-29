@@ -78,7 +78,7 @@ class UpdateController extends Controller
 
             if($request->hasFile($editColumn->nme))
             {
-                $path = $request->{$editColumn->nme}->store('images/' . $tableName);
+                $path = $request->{$editColumn->nme}->store('public/images/' . $tableName);
                 if(Storage::exists($row->{$editColumn->nme})) 
                 {
                     Storage::delete($row->{$editColumn->nme});

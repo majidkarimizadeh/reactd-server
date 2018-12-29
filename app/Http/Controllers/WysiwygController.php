@@ -11,9 +11,9 @@ class WysiwygController extends Controller
     {
         if ($request->hasFile('file')) 
         {
-            $path = $request->file->store('images/wysiwyg');
+            $path = $request->file->store('public/images/wysiwyg');
             return response()->json([
-                'link' =>  url($path)
+                'link' =>  url(Storage::url($path))
             ]);
         }
     }
@@ -23,9 +23,9 @@ class WysiwygController extends Controller
         if($request->has('name')) 
         {
             $name = $request->name;
-            if(Storage::exists('images/wysiwyg/' . $name)) 
+            if(Storage::exists('public/images/wysiwyg/' . $name)) 
             {
-                Storage::delete('images/wysiwyg/' . $name);
+                Storage::delete('public/images/wysiwyg/' . $name);
             }
         }
     }

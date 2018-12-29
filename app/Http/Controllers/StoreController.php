@@ -72,7 +72,7 @@ class StoreController extends Controller
 
             if($request->hasFile($createColumn->nme))
             {
-                $path = $request->{$createColumn->nme}->store('images/' . $tableName);
+                $path = $request->{$createColumn->nme}->store('public/images/' . $tableName);
                 if(!property_exists($createColumn, 'trs')) 
                 {
                     $shouldInsert[$createColumn->nme] = $path;
