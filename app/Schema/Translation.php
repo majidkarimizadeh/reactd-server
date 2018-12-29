@@ -65,4 +65,9 @@ class Translation
         Schema::hasColumn($key . '_translation', str_singular($key) . '_id') &&
         Schema::hasColumn($key . '_translation', 'locale');
     }
+
+    public static function isTranslatable($key)
+    {
+        return self::existTranslationTable($key) || ends_with($key, '_translation');
+    }
 }
