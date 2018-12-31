@@ -15,6 +15,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     protected $namespace = 'App\Http\Controllers';
+    protected $customNamespace = 'App\Http\Controllers\Custom';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -39,6 +40,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapCustomRoutes();
         //
     }
 
@@ -70,4 +72,21 @@ class RouteServiceProvider extends ServiceProvider
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
     }
+
+    
+    /**
+     * Define the "custom" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapCustomRoutes()
+    {
+        $prefix = '/v1';
+        Route::prefix('api' . $prefix)
+             ->middleware(['api', 'auth:api'])
+             ->namespace($this->customNamespace)
+             ->group(base_path('routes/custom.php'));
+    }    
 }

@@ -28,12 +28,11 @@ function()
 
 
 Route::group([
-	// 'middleware' => 'auth:api',
+	'middleware' => 'auth:api',
 	'prefix'	=>	$prefix
 ], 
 function()
 {
-
 	Route::get('generate-schema', 'SchemaController@generateSchema');
 
 	Route::post('get-menu', 'MenuController@getMenu');
@@ -57,10 +56,4 @@ function()
 	Route::post('wysiwyg-destroy', 'WysiwygController@wysiwygDestroy');
 
     Route::post('logout', 'Auth\AuthController@logout');
-
-    // custom
-    Route::post('get-roles', 'Custom\RoleController@index');
-	Route::post('update-roles', 'Custom\RoleController@update');
-	// end custom
-
 });
