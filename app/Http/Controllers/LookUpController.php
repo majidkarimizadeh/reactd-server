@@ -12,8 +12,10 @@ class LookUpController extends Controller
     {
         $lang   = ($request->has('lang') && $request->lang) ? $request->lang : false;
         $rdf    = $request->rdf;
-        $lookup = DB::table('look_ups')->find($rdf);
+        $relatedKey = $request->relatedKey;
+        $relatedValue = $request->relatedValue;
 
+        $lookup = DB::table('look_ups')->find($rdf);
         $store_key      = $lookup->store_key;
         $display_key    = $lookup->display_key;
         $table          = $lookup->table;
@@ -25,11 +27,23 @@ class LookUpController extends Controller
 
         if($lang AND Translation::isTranslatable($table))
         {
-            $query = str_replace(':condition', " WHERE locale = '{$lang}' ", $query);
+            if($relatedKey && $relatedValue) {
+                $translationTable = $table;
+                $pureTable = str_replace('_translation', '', $table);
+                
+                // should change better hard coding "id" for primary
+                $query = "SELECT T0.{$store_key} as value, T0.{$display_key} as label FROM {$translationTable} as T0 LEFT JOIN {$pureTable} as T1 ON T0.{$store_key} = T1.id WHERE T1.{$relatedKey} = '{$relatedValue}' AND T0.locale = '{$lang}' ";
+            } else {
+                $query = str_replace(':condition', " WHERE locale = '{$lang}' ", $query);
+            }
         }
         else 
         {
-            $query = str_replace(':condition', " ", $query);
+            if($relatedKey && $relatedValue) {
+                $query = str_replace(':condition', " WHERE '{$relatedKey}' = '{$relatedValue}' ", $query);
+            } else {
+                $query = str_replace(':condition', " ", $query);
+            }
         }
         $lookups = DB::select($query);
         return response()->json($lookups);
