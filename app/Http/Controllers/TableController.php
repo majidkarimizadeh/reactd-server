@@ -34,7 +34,7 @@ class TableController extends Controller
         }
 
         $detailsName    = json_decode($table->details);
-        $details        = Security::detailSecurity(array_merge($detailsName, (array)$morphsName));
+        $details        = Security::detailSecurity($detailsName);
         $columns        = Filter::getTableColumns($tableName);
         $totalRows      = DB::table($tableName)->count();
 
