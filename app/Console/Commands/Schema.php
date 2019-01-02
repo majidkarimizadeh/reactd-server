@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
 use App\Schema\Icon;
 use App\Schema\Label;
 use App\Schema\Translation;
@@ -10,8 +12,45 @@ use App\Schema\SchemaMessage;
 use App\Schema\TypeChecker;
 use DB;
 
-class SchemaController extends Controller
+class Schema extends Command
 {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'schema:generate';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'will generate your schema';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->info('Generating your schema...');
+        $this->generateSchema();
+        $this->info('Schema generated successfully');
+    }
+
+
     public function generateSchema()
     {
         DB::table('schema')->truncate();
@@ -272,4 +311,5 @@ class SchemaController extends Controller
     {
         // you can update your schema for better rendering form :)
     }
+
 }

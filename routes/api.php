@@ -33,8 +33,6 @@ Route::group([
 ], 
 function()
 {
-	Route::get('generate-schema', 'SchemaController@generateSchema');
-
 	Route::post('get-menu', 'MenuController@getMenu');
 
 	Route::post('get-table', 'TableController@getTable');
