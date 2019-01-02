@@ -92,12 +92,13 @@ class Schema extends Command
             }
             $viewableColumnsKey  = array_values( range(10, count($columns) * 10, 10) );
 
-            $schemaRecordMetaKey    = $table;
-            $schemaRecordMetaValue  = [
+            $schemaTableRecordMetaKey    = $table;
+            $schemaTableRecordMetaValue  = [
                 'nme'       =>  $table,
                 'pk'        =>  count($primaryKey) ? $primaryKey[0]->Column_name : '',
                 'url'       =>  $table,
                 'typ'       =>  'tbl',
+                'tmp'       =>  'lst',
                 'lbl'       =>  Label::get($table),
                 'icn'       =>  Icon::get($table),
                 'edt'       =>  $editableColumnsKey,
@@ -110,13 +111,8 @@ class Schema extends Command
 
             if(Translation::has($table)) 
             {
-                $schemaRecordMetaValue['trs'] = Translation::get($table);
+                $schemaTableRecordMetaValue['trs'] = Translation::get($table);
             }
-
-            $schemaRecords[] = [
-                'meta_key'      =>  $schemaRecordMetaKey,
-                'meta_value'    =>  json_encode($schemaRecordMetaValue)
-            ];
 
             foreach ($columns as $key => $column) 
             {
@@ -150,6 +146,9 @@ class Schema extends Command
                 else if(TypeChecker::isImage($column))
                 {
                     $schemaRecordMetaValue['cnt']   = 'img';
+                    $schemaTableRecordMetaValue['tmp'] = 'grd';
+                    // grid image column
+                    $schemaTableRecordMetaValue['gim'] = $column;
                 }
                 else if (TypeChecker::isGeoPoint($column)) 
                 {
@@ -187,6 +186,11 @@ class Schema extends Command
                     'meta_value'    =>  json_encode($schemaRecordMetaValue),
                 ];
             }
+
+            $schemaRecords[] = [
+                'meta_key'      =>  $schemaTableRecordMetaKey,
+                'meta_value'    =>  json_encode($schemaTableRecordMetaValue)
+            ];
         }
         DB::table('schema')->insert($schemaRecords);
 
