@@ -99,6 +99,7 @@ class Schema extends Command
                 'url'       =>  $table,
                 'typ'       =>  'tbl',
                 'tmp'       =>  'lst',
+                'exp'       =>  0,
                 'lbl'       =>  Label::get($table),
                 'icn'       =>  Icon::get($table),
                 'edt'       =>  $editableColumnsKey,
