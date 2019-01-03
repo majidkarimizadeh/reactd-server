@@ -147,8 +147,8 @@ class Schema extends Command
                 {
                     $schemaRecordMetaValue['cnt']   = 'img';
                     $schemaTableRecordMetaValue['tmp'] = 'grd';
-                    // grid image column
-                    $schemaTableRecordMetaValue['gim'] = $column;
+                    // grid columns
+                    $schemaTableRecordMetaValue['grd'] = [20, ( $key + 1 ) * 10];
                 }
                 else if (TypeChecker::isGeoPoint($column)) 
                 {
