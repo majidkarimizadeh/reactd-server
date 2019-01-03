@@ -35,7 +35,8 @@ class Security
         {
             if(array_key_exists('itm', $menu)) 
             {
-                $items[] = self::menuSecurity($menu['itm'], $menu);
+                // $items[] = self::menuSecurity($menu['itm'], $menu);
+                $items['itm'][] = self::menuSecurity($menu['itm'], $menu);
             }
             else
             {
@@ -55,7 +56,6 @@ class Security
                     $items['url'] = array_key_exists('url', $parent) ? $parent['url'] : '' ;
                     $items['icn'] = array_key_exists('icn', $parent) ? $parent['icn'] : '' ;
                 }
-
             }
         }
         return $items;

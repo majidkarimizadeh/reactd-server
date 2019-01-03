@@ -16,7 +16,7 @@ class MenuController extends Controller
         $menu       = json_decode($menuBarRecord, true);
         $secureMenu = Security::menuSecurity($menu);
         return response()->json([
-            'menu'    =>  $secureMenu,
+            'menu'    =>  $secureMenu['itm'],
         ]);
     }
 }
